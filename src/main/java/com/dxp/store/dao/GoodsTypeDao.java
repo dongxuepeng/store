@@ -13,7 +13,8 @@ public interface GoodsTypeDao {
     List<GoodsType> getAllGoodsType(@Param("id") Integer id, @Param("name") String name, @Param("stCount") Integer stCount, @Param("endCount") Integer endCount);
     Integer getGoodsTypeCount(@Param("id") Integer id, @Param("name") String name);
     Integer updateGoodsType(@Param("id") Integer id, @Param("name") String name);
-    Integer addGoodsType(@Param("name") String name);
+    /*Integer addGoodsType(@Param("name") String name);*/
+    Integer addGoodsType(GoodsType goodsType);
     Integer getGoodsTypeByName(@Param("id") Integer id,@Param("name") String name);
     Integer delGoodsType(@Param("ids") List<Integer> ids);
 }

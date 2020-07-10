@@ -92,7 +92,7 @@ layui.use(['table','form'], function(){
                 saveGoodsTypeData(index,
                     type == 'edit' ?'/store/type/updateGoodsType/':'/store/type/addGoodsType/',
                     type == 'edit' ?"修改成功":"新增成功",
-                    type == 'edit' ?"修改失败":"新增失败");
+                    type == 'edit' ?"修改失败":"新增失败",type);
 
             },
             success:function(layero,index){
@@ -106,7 +106,7 @@ layui.use(['table','form'], function(){
             }
         });
     }
-    function saveGoodsTypeData(index,url,succMsg,errorMsg){
+    function saveGoodsTypeData(index,url,succMsg,errorMsg,type){
         var name = $("#typeName").val();
         if(name == ''){
             layer.msg('名称不能为空', {icon: 5});
@@ -134,12 +134,12 @@ layui.use(['table','form'], function(){
             type:'POST',
             data:{id:$("#typeId").val(),name:$("#typeName").val()},
             success:function (msg) {
-                if(msg > 0){
+                if(msg.count > 0){
                     layer.close(index);
                     layer.msg(succMsg);
                     setTimeout(function(){
                         reloadTableData($("#queryId").val(),$("#queryName").val());
-                        parent.reloadGooldsType();
+                        parent.reloadGooldsType(type,msg.id,msg.name);
                     }, 1000);
                 }else{
                     layer.msg(errorMsg,{icon: 5});
@@ -160,7 +160,7 @@ layui.use(['table','form'], function(){
                     layer.msg("删除成功");
                     setTimeout(function(){
                         reloadTableData($("#queryId").val(),$("#queryName").val());
-                        parent.reloadGooldsType();
+                        parent.reloadGooldsType("del",ids);
                     }, 1000);
                 }else{
                     layer.msg("删除失败",{icon: 5});

@@ -29,11 +29,11 @@ public class TypeController {
 
     }
     @RequestMapping(value = "updateGoodsType")
-    public Integer updateGoodsType(@Param("id") Integer id, @Param("name") String name){
+    public JSONObject updateGoodsType(@Param("id") Integer id, @Param("name") String name){
         return goodsTypeService.updateGoodsType(id,name);
     }
     @RequestMapping(value = "addGoodsType")
-    public Integer addGoodsType(@Param("name") String name){
+    public JSONObject addGoodsType(@Param("name") String name){
         return goodsTypeService.addGoodsType(name);
     }
 

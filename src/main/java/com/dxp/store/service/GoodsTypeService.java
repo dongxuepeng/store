@@ -33,12 +33,23 @@ public class GoodsTypeService {
         return jo;
     }
 
-    public Integer updateGoodsType(Integer id, String name) {
-        return goodsTypeDao.updateGoodsType(id,name);
+    public JSONObject updateGoodsType(Integer id, String name) {
+        JSONObject jo = new JSONObject();
+        jo.put("count",goodsTypeDao.updateGoodsType(id,name));
+        jo.put("id",id);
+        jo.put("name",name);
+        return jo;
     }
 
-    public Integer addGoodsType(String name) {
-        return goodsTypeDao.addGoodsType(name);
+    public JSONObject addGoodsType(String name) {
+        GoodsType goodsType = new GoodsType();
+        goodsType.setTypeName(name);
+        JSONObject jo = new JSONObject();
+        Integer id = goodsTypeDao.addGoodsType(goodsType);
+        jo.put("count",goodsType.getTypeId());
+        jo.put("id",goodsType.getTypeId());
+        jo.put("name",goodsType.getTypeName());
+        return jo;
     }
 
     public Integer getGoodsTypeByName(Integer id, String name) {

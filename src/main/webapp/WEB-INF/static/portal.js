@@ -1,9 +1,10 @@
 $(function(){
     //动态加载商品名称
-    reloadGooldsType();
+    reloadGooldsType("first","","");
 });
+var element;
 layui.use('element', function(){
-    var element = layui.element; //导航的hover效果、二级菜单等功能，需要依赖element模块
+    element = layui.element; //导航的hover效果、二级菜单等功能，需要依赖element模块
 
     //监听导航点击
     element.on('nav(navs)', function(elem){
@@ -51,7 +52,6 @@ function unflodEle(ele,elem){
         ,id: id
     })
     ele.tabChange('tabs', id);
-
 }
 
 function changeNavs(cId){
@@ -82,7 +82,7 @@ function changeNavs(cId){
     }
 }
 
-function reloadGooldsType(){
+function reloadGooldsType(type,thisId,newTitle){
     $.ajax({
         url:'/store/type/goods/',
         type:'POST',
@@ -94,11 +94,58 @@ function reloadGooldsType(){
             for(var i=0;i<data.length;i++){
                 var id = data[i].id;
                 var name = data[i].name;
-                spgl_dl.append("<dd><a href='javascript:;' data-id='spgl_"+id+"'>"+name+"</a></dd>");
+                var dataId = 'spgl_'+id;
+                spgl_dl.append("<dd><a href='javascript:;' data-id='"+dataId+"'>"+name+"</a></dd>");
             }
+
         },
         error:function(data){
-            console.info("error");
         }
     });
+    setTimeout(function(){
+        if(type == 'first'){
+            var elem = $($($(".layui-nav-item")[0]).children()[0]);
+            unflodEle(element,elem);
+        }else{
+            element.init();
+        }
+
+        //改变tab标签
+        if(type == 'edit'){
+            if(checkHasTab(thisId)){
+                var thisLi = $("li[lay-id='spgl_"+thisId+"']");
+                var oldHtml = $(thisLi.children()[0]);
+                thisLi.text(newTitle);
+                thisLi.append(oldHtml);
+                oldHtml.on("click",function(){
+                    element.tabDelete("tabs", "spgl_"+thisId);
+                });
+            }
+        }else if(type == 'del'){
+            var idsArr = (""+thisId).split(",");
+            for(var i=0;i<idsArr.length;i++){
+                if(checkHasTab(idsArr[i])){
+                    element.tabDelete("tabs", "spgl_"+idsArr[i]);
+                }
+            }
+        }
+    }, 1000);
+
+
+}
+function checkHasTab(id){
+    var thisId = "";
+    if((""+id).indexOf("_") > 0){
+        thisId = id;
+    }else{
+        thisId = "spgl_"+id;
+    }
+    var tabArry = $($(".layui-tab-title")[0]).children();
+    for(var y=0;y<tabArry.length;y++){
+        var itemId = $(tabArry[y]).attr("lay-id");
+        if(thisId == itemId){
+            return true;
+        }
+    }
+    return false;
 }

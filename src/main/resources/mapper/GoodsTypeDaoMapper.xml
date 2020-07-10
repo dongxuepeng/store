@@ -27,8 +27,8 @@
             <if test="name != null and name != ''"> and type_nam = #{name} </if>
         </where>
     </select>
-    <insert id="addGoodsType">
-        insert into goodstypeinfo(type_nam) values(#{name})
+    <insert id="addGoodsType" parameterType="com.dxp.store.entity.GoodsType" useGeneratedKeys="true" keyProperty="typeId">
+        insert into goodstypeinfo(type_nam) values(#{typeName})
     </insert>
     <update id="updateGoodsType">
         update goodstypeinfo set type_nam = #{name} where type_id = #{id}
