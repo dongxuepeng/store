@@ -7,9 +7,11 @@ layui.use(['table','form'], function(){
         ,title: '用户数据表'
         ,cols: [[
             {type: 'checkbox', fixed: 'left',width:'5%'}
-            ,{field:'id', title:'ID', width:'30%', fixed: 'left', unresize: true, sort: true}
-            ,{field:'name', title:'商品名称', width:'45%'}
-            ,{fixed: 'right', title:'操作', toolbar: '#barDemo', width:'20%'}
+            ,{field:'id', title:'ID', width:'20%', fixed: 'left', unresize: true, sort: true}
+            ,{field:'name', title:'商品名称', width:'20%'}
+            ,{field:'passValue', title:'运费', width:'20%'}
+            ,{field:'totalValue', title:'总额', width:'20%'}
+            ,{fixed: 'right', title:'操作', toolbar: '#barDemo', width:'15%'}
         ]]
         ,id: 'testReload'
         ,page: true,
@@ -85,7 +87,7 @@ layui.use(['table','form'], function(){
             //layer提供了5种层类型。可传入的值有：0（信息框，默认）1（页面层）2（iframe层）3（加载层）4（tips层）
             type: 1,
             title: type == 'edit' ? "【修改】商品信息" : "【新增】商品信息",
-            area: ['400px', '300px'],
+            area: ['400px', '500px'],
             content: $("#dataDiv"),//引用的弹出层的页面层的方式加载修改界面表单
             btn:['保存','取消'],
             yes:function (index,layero) {
@@ -98,8 +100,12 @@ layui.use(['table','form'], function(){
             success:function(layero,index){
                 var typeId = type == 'edit' ? data.id :'自动生成';
                 var typeName = type == 'edit' ? data.name:"";
+                var passValue = type == 'edit' ? data.passValue:0.00;
+                var totalValue = type == 'edit' ? data.totalValue:0.00;
                 $("#typeId").val(typeId);
                 $("#typeName").val(typeName);
+                $("#passValue").val(passValue);
+                $("#totalValue").val(totalValue);
             },
             btn2:function (index,layero) {
                 reloadTableData($("#queryId").val(),$("#queryName").val());
@@ -110,6 +116,20 @@ layui.use(['table','form'], function(){
         var name = $("#typeName").val();
         if(name == ''){
             layer.msg('名称不能为空', {icon: 5});
+            return false;
+        }
+        var passValue = $("#passValue").val();
+        if(isNaN(passValue)){
+            layer.msg('运费请填写正确数字', {icon: 5});
+            return false;
+        }
+        var totalValue = $("#totalValue").val();
+        if(isNaN(totalValue)){
+            layer.msg('总额请填写正确数字', {icon: 5});
+            return false;
+        }
+        if(passValue >=  totalValue){
+            layer.msg('总额不得小于运费', {icon: 5});
             return false;
         }
         var count = -1;
@@ -132,7 +152,7 @@ layui.use(['table','form'], function(){
         $.ajax({
             url:url,
             type:'POST',
-            data:{id:$("#typeId").val(),name:$("#typeName").val()},
+            data:{id:$("#typeId").val(),name:$("#typeName").val(),goodyf:passValue,goodzf:totalValue},
             success:function (msg) {
                 if(msg.count > 0){
                     layer.close(index);

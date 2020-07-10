@@ -26,6 +26,8 @@ public class GoodsTypeService {
             joItm = new JSONObject();
             joItm.put("id",goodsType.getTypeId());
             joItm.put("name",goodsType.getTypeName());
+            joItm.put("passValue",goodsType.getGoodYf() == null ? 0.00 : goodsType.getGoodYf());
+            joItm.put("totalValue",goodsType.getGoodZf() == null ? 0.00 : goodsType.getGoodZf());
             ja.add(joItm);
         }
         jo.put("count",goodsTypeDao.getGoodsTypeCount(id,name));
@@ -33,17 +35,19 @@ public class GoodsTypeService {
         return jo;
     }
 
-    public JSONObject updateGoodsType(Integer id, String name) {
+    public JSONObject updateGoodsType(Integer id, String name,Double goodyf,Double goodzf) {
         JSONObject jo = new JSONObject();
-        jo.put("count",goodsTypeDao.updateGoodsType(id,name));
+        jo.put("count",goodsTypeDao.updateGoodsType(id,name,goodyf,goodzf));
         jo.put("id",id);
         jo.put("name",name);
         return jo;
     }
 
-    public JSONObject addGoodsType(String name) {
+    public JSONObject addGoodsType(String name,Double goodyf,Double goodzf) {
         GoodsType goodsType = new GoodsType();
         goodsType.setTypeName(name);
+        goodsType.setGoodYf(goodyf == null ? 0.00 : goodyf);
+        goodsType.setGoodZf(goodzf == null ? 0.00 : goodzf);
         JSONObject jo = new JSONObject();
         Integer id = goodsTypeDao.addGoodsType(goodsType);
         jo.put("count",goodsType.getTypeId());

@@ -17,19 +17,24 @@
     </style>
 </head>
 <body>
-<div class="demoTable">
-    主键：
-    <div class="layui-inline">
-        <input class="layui-input" name="id" id="queryId" autocomplete="off">
+<form class="layui-form" action="javascript:;">
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">主键：</label>
+            <div class="layui-input-inline">
+                <input class="layui-input" name="id" id="queryId" autocomplete="off">
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">类型名称：</label>
+            <div class="layui-input-inline">
+                <input class="layui-input" name="name" id="queryName" autocomplete="off">
+            </div>
+        </div>
+        <button class="layui-btn" data-type="reload" id="queryBtn">搜索</button>
+        <button class="layui-btn" data-type="clear" id="clearBtn">重置</button>
     </div>
-    名称：
-    <div class="layui-inline">
-        <input class="layui-input" name="name" id="queryName" autocomplete="off">
-    </div>
-    <button class="layui-btn" data-type="reload" id="queryBtn">搜索</button>
-    <button class="layui-btn" data-type="clear" id="clearBtn">重置</button>
-</div>
-
+</form>
 <table class="layui-hide" id="test" lay-filter="test"></table>
 <!--这里是弹出层的表单信息
 //表单的id用于表单的选择，style是在本页隐藏，只有点击编辑才会弹出-->
@@ -37,16 +42,30 @@
     <div class="layui-col-md10">
         <form class="layui-form layui-from-pane" action="" style="margin-top:20px" >
             <div class="layui-form-item">
-                <label class="layui-form-label">主键</label>
+                <label class="layui-form-label">主键：</label>
                 <div class="layui-input-block">
                     <input type="text" id="typeId" name="typeId" readonly="readonly"
                            required  lay-verify="required" autocomplete="off" placeholder="" class="layui-input">
                 </div>
             </div>
             <div class="layui-form-item">
-                <label class="layui-form-label">商品名称</label>
+                <label class="layui-form-label">类型名称：</label>
                 <div class="layui-input-block">
                     <input type="text" id="typeName" name="typeName"
+                           required  lay-verify="required" autocomplete="off" placeholder="请输入商品名称" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">运费：</label>
+                <div class="layui-input-block">
+                    <input type="text" id="passValue" name="passValue"
+                           required  lay-verify="required" autocomplete="off" placeholder="请输入商品名称" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">总额：</label>
+                <div class="layui-input-block">
+                    <input type="text" id="totalValue" name="totalValue"
                            required  lay-verify="required" autocomplete="off" placeholder="请输入商品名称" class="layui-input">
                 </div>
             </div>

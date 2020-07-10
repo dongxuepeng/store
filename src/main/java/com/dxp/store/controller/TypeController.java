@@ -30,12 +30,15 @@ public class TypeController {
 
     }
     @RequestMapping(value = "updateGoodsType")
-    public JSONObject updateGoodsType(@Param("id") Integer id, @Param("name") String name){
-        return goodsTypeService.updateGoodsType(id,name);
+    public JSONObject updateGoodsType(@Param("id") Integer id, @Param("name") String name,
+                                        @Param("goodyf") Double goodyf,@Param("goodzf") Double goodzf){
+        return goodsTypeService.updateGoodsType(id,name,goodyf,goodzf);
     }
     @RequestMapping(value = "addGoodsType")
-    public JSONObject addGoodsType(@Param("name") String name){
-        return goodsTypeService.addGoodsType(name);
+    public JSONObject addGoodsType(@Param("name") String name,
+                                   @Param("goodyf") Double goodyf,@Param("goodzf") Double goodzf){
+
+        return goodsTypeService.addGoodsType(name,goodyf,goodzf);
     }
 
     @RequestMapping(value = "delGoodsType")

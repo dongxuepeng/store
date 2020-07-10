@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.dxp.store.dao.GoodsTypeDao">
     <select id="getAllGoodsType" resultType="com.dxp.store.entity.GoodsType">
-        select  type_id as typeId, type_nam as typeName
+        select  type_id as typeId, type_nam as typeName,good_yf as goodYf,good_zf as goodZf
         from goodstypeinfo
         <where>
             <if test="id != null"> and type_id = #{id}</if>
@@ -28,10 +28,10 @@
         </where>
     </select>
     <insert id="addGoodsType" parameterType="com.dxp.store.entity.GoodsType" useGeneratedKeys="true" keyProperty="typeId">
-        insert into goodstypeinfo(type_nam) values(#{typeName})
+        insert into goodstypeinfo(type_nam,good_yf,good_zf) values(#{typeName},#{goodyf},#{goodzf})
     </insert>
     <update id="updateGoodsType">
-        update goodstypeinfo set type_nam = #{name} where type_id = #{id}
+        update goodstypeinfo set type_nam = #{name},good_yf=#{goodyf},good_zf=#{goodzf} where type_id = #{id}
     </update>
     <delete id="delGoodsType" parameterType="java.util.List">
         delete from goodstypeinfo where type_id in

@@ -35,6 +35,24 @@ insert  into `colortypeinfo`(`color_id`,`color_name`,`gt_id`) values
 (4,'蓝色',7),
 (5,'橙色',1);
 
+/*Table structure for table `goodsinfo` */
+
+DROP TABLE IF EXISTS `goodsinfo`;
+
+CREATE TABLE `goodsinfo` (
+  `good_id` int(10) NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `good_name` varchar(100) DEFAULT NULL COMMENT '名称',
+  `type_id` int(10) DEFAULT NULL COMMENT '种类',
+  `color_id` int(10) DEFAULT NULL COMMENT '颜色',
+  `buy_date` date DEFAULT NULL COMMENT '入手时间',
+  `buy_price` decimal(10,2) DEFAULT NULL COMMENT '入手单价',
+  `buy_value` int(10) DEFAULT NULL COMMENT '入手数量',
+  `now_value` int(10) DEFAULT NULL COMMENT '库存数量',
+  PRIMARY KEY (`good_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+/*Data for the table `goodsinfo` */
+
 /*Table structure for table `goodstypeinfo` */
 
 DROP TABLE IF EXISTS `goodstypeinfo`;
@@ -42,16 +60,18 @@ DROP TABLE IF EXISTS `goodstypeinfo`;
 CREATE TABLE `goodstypeinfo` (
   `type_id` int(10) NOT NULL AUTO_INCREMENT COMMENT '主键',
   `type_nam` varchar(100) DEFAULT NULL COMMENT '商品名称',
+  `good_yf` decimal(10,2) DEFAULT NULL COMMENT '运费',
+  `good_zf` decimal(10,2) DEFAULT NULL COMMENT '总费用',
   PRIMARY KEY (`type_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
 
 /*Data for the table `goodstypeinfo` */
 
-insert  into `goodstypeinfo`(`type_id`,`type_nam`) values 
-(1,'商品A'),
-(4,'商品D'),
-(5,'商品E'),
-(7,'商品G');
+insert  into `goodstypeinfo`(`type_id`,`type_nam`,`good_yf`,`good_zf`) values 
+(1,'商品A',NULL,NULL),
+(4,'商品D',NULL,NULL),
+(5,'商品E',NULL,NULL),
+(7,'商品G',20.00,30.01);
 
 /*Table structure for table `userinfo` */
 
