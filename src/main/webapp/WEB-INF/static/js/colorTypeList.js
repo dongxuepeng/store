@@ -2,13 +2,14 @@ layui.use(['table','form'], function(){
     var table = layui.table;
     table.render({
         elem: '#test'
-        ,url:'/store/type/goods/'
-        ,toolbar: '#toolbarDemo' //开启头部工具栏，并为其绑定左侧模板
-        ,title: '用户数据表'
+        ,url:'/store/type/colors/'
+        ,toolbar: '#toolbarDemo'
+        ,title: '颜色列表'
         ,cols: [[
             {type: 'checkbox', fixed: 'left',width:'5%'}
-            ,{field:'id', title:'ID', width:'30%', fixed: 'left', unresize: true, sort: true}
-            ,{field:'name', title:'商品名称', width:'45%'}
+            ,{field:'id', title:'ID', width:'15%', fixed: 'left', unresize: true, sort: true}
+            ,{field:'name', title:'颜色名称', width:'30%'}
+            ,{field:'goods', title:'所属商品', width:'30%'}
             ,{fixed: 'right', title:'操作', toolbar: '#barDemo', width:'20%'}
         ]]
         ,id: 'testReload'
@@ -24,21 +25,24 @@ layui.use(['table','form'], function(){
             return;
         }
         var name = $("#queryName").val();
-        reloadTableData(id,name);
+        var goodsType = $("#queryGoodsId").val();
+        reloadTableData(id,name,goodsType);
     });
     //重置
     $("#clearBtn").on("click",function(){
         $("#queryId").val("");
         $("#queryName").val("");
-        reloadTableData($("#queryId").val(),$("#queryName").val());
+        $("#queryGoodsId").val("");
+        reloadTableData($("#queryId").val(),$("#queryName").val(),$("#queryGoodsId").val());
     });
     //刷新表数据
-    function reloadTableData(id,name){
+    function reloadTableData(id,name,goodsType){
         table.reload("testReload",{
-            url:"/store/type/goods/",
+            url:"/store/type/colors/",
             where:{
                 id:id,
-                name:name
+                name:name,
+                goodsType:goodsType
             },
             page:{curr:1}
         },'data');
@@ -84,13 +88,13 @@ layui.use(['table','form'], function(){
         layer.open({
             //layer提供了5种层类型。可传入的值有：0（信息框，默认）1（页面层）2（iframe层）3（加载层）4（tips层）
             type: 1,
-            title: type == 'edit' ? "【修改】商品信息" : "【新增】商品信息",
-            area: ['400px', '300px'],
+            title: type == 'edit' ? "【修改】颜色信息" : "【新增】颜色信息",
+            area: ['400px', '500px'],
             content: $("#dataDiv"),//引用的弹出层的页面层的方式加载修改界面表单
             btn:['保存','取消'],
             yes:function (index,layero) {
                 saveGoodsTypeData(index,
-                    type == 'edit' ?'/store/type/updateGoodsType/':'/store/type/addGoodsType/',
+                    type == 'edit' ?'/store/type/updateColorType/':'/store/type/addColorType/',
                     type == 'edit' ?"修改成功":"新增成功",
                     type == 'edit' ?"修改失败":"新增失败");
 
@@ -98,11 +102,13 @@ layui.use(['table','form'], function(){
             success:function(layero,index){
                 var typeId = type == 'edit' ? data.id :'自动生成';
                 var typeName = type == 'edit' ? data.name:"";
+                var goods = type == 'edit' ? data.goods:"";
                 $("#typeId").val(typeId);
                 $("#typeName").val(typeName);
+                $("#goodsTypeId").val(goods);
             },
             btn2:function (index,layero) {
-                reloadTableData($("#queryId").val(),$("#queryName").val());
+                reloadTableData($("#queryId").val(),$("#queryName").val(),$("#queryGoodsId").val());
             }
         });
     }
@@ -112,12 +118,17 @@ layui.use(['table','form'], function(){
             layer.msg('名称不能为空', {icon: 5});
             return false;
         }
+        var goods = $("#goodsTypeId").val();
+        if(goods == ''){
+            layer.msg('所属商品不能为空', {icon: 5});
+            return false;
+        }
         var count = -1;
         $.ajax({
-            url:'/store/type/checkGoodsTypeName/',
+            url:'/store/type/checkColorTypeName/',
             type:'POST',
             async: false,
-            data:{id:$("#typeId").val(),name:$("#typeName").val()},
+            data:{id:$("#typeId").val(),name:$("#typeName").val(),goods:goods},
             success:function (msg) {
                 count = msg;
             },
@@ -126,20 +137,19 @@ layui.use(['table','form'], function(){
             }
         });
         if(count > 0){
-            layer.msg('该商品名称已存在!', {icon: 5});
+            layer.msg('该商品已存在【'+name+'】!', {icon: 5});
             return false;
         }
         $.ajax({
             url:url,
             type:'POST',
-            data:{id:$("#typeId").val(),name:$("#typeName").val()},
+            data:{id:$("#typeId").val(),name:$("#typeName").val(),goods:goods},
             success:function (msg) {
                 if(msg > 0){
                     layer.close(index);
                     layer.msg(succMsg);
                     setTimeout(function(){
-                        reloadTableData($("#queryId").val(),$("#queryName").val());
-                        parent.reloadGooldsType();
+                        reloadTableData($("#queryId").val(),$("#queryName").val(),$("#queryGoodsId").val());
                     }, 1000);
                 }else{
                     layer.msg(errorMsg,{icon: 5});
@@ -152,15 +162,14 @@ layui.use(['table','form'], function(){
     }
     function delGoodsTypeData(ids){
         $.ajax({
-            url:'/store/type/delGoodsType/',
+            url:'/store/type/delColorsType/',
             type:'POST',
             data:{ids:ids},
             success:function (msg) {
                 if(msg > 0){
                     layer.msg("删除成功");
                     setTimeout(function(){
-                        reloadTableData($("#queryId").val(),$("#queryName").val());
-                        parent.reloadGooldsType();
+                        reloadTableData($("#queryId").val(),$("#queryName").val(),$("#queryGoodsId").val());
                     }, 1000);
                 }else{
                     layer.msg("删除失败",{icon: 5});

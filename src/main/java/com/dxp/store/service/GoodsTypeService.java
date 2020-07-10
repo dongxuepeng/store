@@ -15,8 +15,8 @@ public class GoodsTypeService {
     @Autowired
     GoodsTypeDao goodsTypeDao;
     public JSONObject getAllGoodsType(Integer id, String name,Integer page, Integer limit){
-        int stCount = (page-1)*limit;
-        int endCount = page*limit;
+        Integer stCount = null == page ? null :(page-1)*limit;
+        Integer endCount = null == page ? null : page*limit;
         List<GoodsType> list =  goodsTypeDao.getAllGoodsType(id,name,stCount,endCount);
         JSONObject jo = new JSONObject();
         jo.put("code",0);

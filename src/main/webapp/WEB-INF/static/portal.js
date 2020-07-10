@@ -1,3 +1,7 @@
+$(function(){
+    //动态加载商品名称
+    reloadGooldsType();
+});
 layui.use('element', function(){
     var element = layui.element; //导航的hover效果、二级菜单等功能，需要依赖element模块
 
@@ -11,7 +15,10 @@ layui.use('element', function(){
         changeNavs(currTabId);
     });
 });
+var ifreamHeight = 0;
 function unflodEle(ele,elem){
+    var contentTd = $("#countTd");
+    ifreamHeight = parseInt(contentTd.css("height")) - parseInt($(contentTd.children()[0]).css("height"));
     var id = elem.attr("data-id");
     var idexId = id.indexOf("_");
     if(idexId < 0) {
@@ -22,26 +29,28 @@ function unflodEle(ele,elem){
                 $(liEles[i]).removeClass("layui-nav-itemed");
             }
         }
+        var attrId = $($($($("#"+id).children()[1]).children()[0]).children()[0]).attr("data-id");
+        id = attrId;
     }
-    if(id == 'lbwh' || id == 'syfx'){
+    /*if(id == 'lbwh' || id == 'syfx'){
         return ;
-    }
-        var tabArry = $($(".layui-tab-title")[0]).children();
-        for(var y=0;y<tabArry.length;y++){
-            var itemId = $(tabArry[y]).attr("lay-id");
-            if(id == itemId){
-                ele.tabChange('tabs', id);
-                return;
-            }
+    }*/
+    var tabArry = $($(".layui-tab-title")[0]).children();
+    for(var y=0;y<tabArry.length;y++){
+        var itemId = $(tabArry[y]).attr("lay-id");
+        if(id == itemId){
+            ele.tabChange('tabs', id);
+            return;
         }
-        ele.tabAdd('tabs', {
-            title: elem.text() //用于演示
-            ,content: "<iframe name='myIframe' id='myIframe' src='/store/jsp/import?typeId="+id+"'" +
-            " frameborder='0' align='left' width='100%' class='pull-left' height='500px' " +
-            "scrolling='no'></iframe>"
-            ,id: id
-        })
-        ele.tabChange('tabs', id);
+    }
+    ele.tabAdd('tabs', {
+        title: $("a[data-id = '"+id+"']").text()/*elem.text()*/
+        ,content: "<iframe name='myIframe' id='myIframe' src='/store/jsp/import?typeId="+id+"'" +
+        " frameborder='0' align='left' width='100%' class='pull-left' height='"+ifreamHeight+"' " +
+        "scrolling='no'></iframe>"
+        ,id: id
+    })
+    ele.tabChange('tabs', id);
 
 }
 
@@ -71,4 +80,25 @@ function changeNavs(cId){
             $(ddEles[y]).addClass("layui-this");
         }
     }
+}
+
+function reloadGooldsType(){
+    $.ajax({
+        url:'/store/type/goods/',
+        type:'POST',
+        data:{aa:"aa"},
+        success:function (msg) {
+            var spgl_dl = $("#spgl_dl");
+            spgl_dl.children().remove();
+            var data = msg.data;
+            for(var i=0;i<data.length;i++){
+                var id = data[i].id;
+                var name = data[i].name;
+                spgl_dl.append("<dd><a href='javascript:;' data-id='spgl_"+id+"'>"+name+"</a></dd>");
+            }
+        },
+        error:function(data){
+            console.info("error");
+        }
+    });
 }

@@ -27,9 +27,7 @@
                 </li>
                 <li class="layui-nav-item" id="spgl">
                     <a href="javascript:;" data-id="spgl">商品管理</a>
-                    <dl class="layui-nav-child">
-                        <dd><a href="javascript:;" data-id="spgl_1">商品1</a></dd>
-                        <dd><a href="javascript:;" data-id="spgl_2">商品2</a></dd>
+                    <dl class="layui-nav-child" id = "spgl_dl">
                     </dl>
                 </li>
                 <li class="layui-nav-item" id="syfx">
@@ -41,7 +39,7 @@
                 </li>
             </ul>
         </td>
-        <td width="90%" valign="top">
+        <td width="90%" valign="top" id="countTd">
             <div class="layui-tab" lay-filter="tabs" lay-allowclose="true">
                 <ul class="layui-tab-title">
 
