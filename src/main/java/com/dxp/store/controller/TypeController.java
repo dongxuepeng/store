@@ -1,5 +1,6 @@
 package com.dxp.store.controller;
 
+import com.dxp.store.service.ColorTypeService;
 import com.dxp.store.service.GoodsTypeService;
 import com.dxp.store.service.UserService;
 import net.minidev.json.JSONArray;
@@ -40,5 +41,35 @@ public class TypeController {
     @RequestMapping(value = "delGoodsType")
     public Integer delGoodsType(@Param("ids") String ids){
         return goodsTypeService.delGoodsType(ids);
+    }
+
+    @Autowired
+    ColorTypeService colorTypeService;
+    @RequestMapping(value = "color")
+    public JSONObject getColorType(@Param("id") Integer id, @Param("name") String name, @Param("goodsType") Integer goodsType,Integer page, Integer limit){
+        return colorTypeService.getAllColorType(id,name,goodsType,page,limit);
+    }
+    @RequestMapping(value = "checkColorName")
+    public Integer checkColorName(@Param("id") String id, @Param("name") String name,@Param("goods") Integer goods){
+        if("自动生成".equals(id)){
+            return colorTypeService.getColorTypeByName(null,name,goods);
+        }else{
+            return colorTypeService.getColorTypeByName(Integer.parseInt(id),name,goods);
+        }
+
+    }
+    @RequestMapping(value = "updateColorType")
+    public Integer updateColorType(@Param("id") Integer id, @Param("name") String name,@Param("goods") Integer goods){
+        return colorTypeService.updateColorType(id,name,goods);
+    }
+    @RequestMapping(value = "addColorType")
+    public Integer addColorType(@Param("name") String name,@Param("goods") Integer goods){
+
+        return colorTypeService.addColorType(name,goods);
+    }
+
+    @RequestMapping(value = "delColorType")
+    public Integer delColorType(@Param("ids") String ids){
+        return colorTypeService.delColorType(ids);
     }
 }

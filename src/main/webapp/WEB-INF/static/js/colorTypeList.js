@@ -1,8 +1,29 @@
+$(function(){
+    $.ajax({
+        url:'/store/type/goods/',
+        type:'POST',
+        async: false,
+        data:{aa:"aa"},
+        success:function (msg) {
+            var queryGoods = $("#queryGoodsId");
+            var goods = $("#goodsTypeId");
+            queryGoods.append("<option value=''>直接选择或搜索选择</option>");
+            var data = msg.data;
+            for(var i=0;i<data.length;i++){
+                queryGoods.append("<option value='"+data[i].id+"'>"+data[i].name+"</option>");
+                goods.append("<option value='"+data[i].id+"'>"+data[i].name+"</option>");
+            }
+        },
+        error:function(data){
+        }
+    });
+});
 layui.use(['table','form'], function(){
     var table = layui.table;
+    var form = layui.form;
     table.render({
         elem: '#test'
-        ,url:'/store/type/colors/'
+        ,url:'/store/type/color/'
         ,toolbar: '#toolbarDemo'
         ,title: '颜色列表'
         ,cols: [[
@@ -10,8 +31,12 @@ layui.use(['table','form'], function(){
             ,{field:'id', title:'ID', width:'15%', fixed: 'left', unresize: true, sort: true}
             ,{field:'name', title:'颜色名称', width:'30%'}
             ,{field:'goods', title:'所属商品', width:'30%'}
+            ,{field:'goodsId', title:'所属商品Id', width:'0%'}
             ,{fixed: 'right', title:'操作', toolbar: '#barDemo', width:'20%'}
-        ]]
+        ]],
+        done:function(res,curr,count){
+            $("[data-field='goodsId']").css('display','none');
+        }
         ,id: 'testReload'
         ,page: true,
         height:parent.ifreamHeight - 50
@@ -25,7 +50,7 @@ layui.use(['table','form'], function(){
             return;
         }
         var name = $("#queryName").val();
-        var goodsType = $("#queryGoodsId").val();
+        var goodsType = $("#queryGoodsId").val() == '-1' ? "" : $("#queryGoodsId").val();
         reloadTableData(id,name,goodsType);
     });
     //重置
@@ -33,12 +58,14 @@ layui.use(['table','form'], function(){
         $("#queryId").val("");
         $("#queryName").val("");
         $("#queryGoodsId").val("");
-        reloadTableData($("#queryId").val(),$("#queryName").val(),$("#queryGoodsId").val());
+        //changeSelectValue("queryGoodsId","");
+        form.render();
+        reloadTableData($("#queryId").val(),$("#queryName").val(),"");
     });
     //刷新表数据
     function reloadTableData(id,name,goodsType){
         table.reload("testReload",{
-            url:"/store/type/colors/",
+            url:"/store/type/color/",
             where:{
                 id:id,
                 name:name,
@@ -102,10 +129,12 @@ layui.use(['table','form'], function(){
             success:function(layero,index){
                 var typeId = type == 'edit' ? data.id :'自动生成';
                 var typeName = type == 'edit' ? data.name:"";
-                var goods = type == 'edit' ? data.goods:"";
+                var goods = type == 'edit' ? data.goodsId:"";
                 $("#typeId").val(typeId);
                 $("#typeName").val(typeName);
                 $("#goodsTypeId").val(goods);
+                //changeSelectValue("goodsTypeId",goods);
+                form.render();
             },
             btn2:function (index,layero) {
                 reloadTableData($("#queryId").val(),$("#queryName").val(),$("#queryGoodsId").val());
@@ -125,7 +154,7 @@ layui.use(['table','form'], function(){
         }
         var count = -1;
         $.ajax({
-            url:'/store/type/checkColorTypeName/',
+            url:'/store/type/checkColorName/',
             type:'POST',
             async: false,
             data:{id:$("#typeId").val(),name:$("#typeName").val(),goods:goods},
@@ -162,7 +191,7 @@ layui.use(['table','form'], function(){
     }
     function delGoodsTypeData(ids){
         $.ajax({
-            url:'/store/type/delColorsType/',
+            url:'/store/type/delColorType/',
             type:'POST',
             data:{ids:ids},
             success:function (msg) {

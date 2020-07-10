@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dxp.store.dao.ColorTypeDao">
+    <select id="getAllColorType" resultType="java.util.HashMap">
+        SELECT CT.COLOR_ID as id,CT.COLOR_NAME as name,CT.GT_ID as goodsId,GT.TYPE_NAM as goods
+        FROM colortypeinfo CT
+        LEFT JOIN goodstypeinfo GT ON CT.GT_ID = GT.TYPE_ID
+        <where>
+            <if test="id != null"> and CT.COLOR_ID = #{id}</if>
+            <if test="name != null and name != ''"> and CT.COLOR_NAME like concat('%',#{name},'%')</if>
+            <if test="goodsType != null"> and CT.GT_ID = #{goodsType}</if>
+        </where>
+        ORDER BY CT.COLOR_ID DESC
+        <if test="stCount != null and endCount != null"> limit #{stCount},#{endCount}</if>
+    </select>
+    <select id="getColorTypeCount" resultType="java.lang.Integer">
+        select  count(*)
+        from colortypeinfo
+        <where>
+            <if test="id != null"> and COLOR_ID = #{id}</if>
+            <if test="name != null and name != ''"> and COLOR_NAME like concat('%',#{name},'%')</if>
+            <if test="goodsType != null"> and GT_ID = #{goodsType}</if>
+        </where>
+    </select>
+    <select id="getColorTypeByName" resultType="java.lang.Integer">
+        select  count(*)
+        from colortypeinfo
+        <where>
+            <if test="id != null"> and COLOR_ID != #{id}</if>
+            <if test="name != null and name != ''"> and COLOR_NAME = #{name} </if>
+            <if test="goodsType != null"> and GT_ID = #{goodsType}</if>
+        </where>
+    </select>
+    <insert id="addColorType">
+        insert into colortypeinfo(COLOR_NAME,GT_ID) values(#{name},#{goodsType})
+    </insert>
+    <update id="updateColorType">
+        update colortypeinfo set COLOR_NAME = #{name},GT_ID = #{goodsType} where COLOR_ID = #{id}
+    </update>
+    <delete id="delColorType" parameterType="java.util.List">
+        delete from colortypeinfo where COLOR_ID in
+        <foreach collection="ids"  item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </delete>
+</mapper>

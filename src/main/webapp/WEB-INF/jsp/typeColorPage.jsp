@@ -17,23 +17,31 @@
     </style>
 </head>
 <body>
-<div class="demoTable">
-    主键：
+<form class="layui-form" action="javascript:;">
+<div class="layui-form-item">
     <div class="layui-inline">
-        <input class="layui-input" name="id" id="queryId" autocomplete="off">
+        <label class="layui-form-label">主键：</label>
+        <div class="layui-input-inline">
+            <input class="layui-input" name="id" id="queryId" autocomplete="off">
+        </div>
     </div>
-    颜色：
     <div class="layui-inline">
-        <input class="layui-input" name="name" id="queryName" autocomplete="off">
+        <label class="layui-form-label">颜色：</label>
+        <div class="layui-input-inline">
+            <input class="layui-input" name="name" id="queryName" autocomplete="off">
+        </div>
     </div>
-    所属商品：
     <div class="layui-inline">
-        <input class="layui-input" name="name" id="queryGoodsId" autocomplete="off">
+        <label class="layui-form-label">所属商品：</label>
+        <div class="layui-input-inline">
+            <select name="queryGoodsId" lay-verify="required" lay-search="" id="queryGoodsId">
+            </select>
+        </div>
     </div>
     <button class="layui-btn" data-type="reload" id="queryBtn">搜索</button>
     <button class="layui-btn" data-type="clear" id="clearBtn">重置</button>
 </div>
-
+</form>
 <table class="layui-hide" id="test" lay-filter="test"></table>
 <!--这里是弹出层的表单信息
 //表单的id用于表单的选择，style是在本页隐藏，只有点击编辑才会弹出-->
@@ -50,8 +58,10 @@
             <div class="layui-form-item">
                 <label class="layui-form-label">所属商品</label>
                 <div class="layui-input-block">
-                    <input type="text" id="goodsTypeId" name="goodsTypeId"
-                           required  lay-verify="required" autocomplete="off" placeholder="请输入所属商品" class="layui-input">
+                    <select name="goodsTypeId" lay-verify="required" lay-search="" id="goodsTypeId">
+                        <%--<option value="">直接选择或搜索选择</option>
+                        <option value="1">layer</option>--%>
+                    </select>
                 </div>
             </div>
             <div class="layui-form-item">
