@@ -90,6 +90,7 @@ function reloadGooldsType(type,thisId,newTitle){
         success:function (msg) {
             var spgl_dl = $("#spgl_dl");
             spgl_dl.children().remove();
+            spgl_dl.append("<dd><a href='javascript:;' data-id='spgl_0'>商品总览</a></dd>");
             var data = msg.data;
             for(var i=0;i<data.length;i++){
                 var id = data[i].id;

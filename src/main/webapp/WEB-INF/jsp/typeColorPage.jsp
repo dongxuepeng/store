@@ -26,7 +26,7 @@
         </div>
     </div>
     <div class="layui-inline">
-        <label class="layui-form-label">颜色：</label>
+        <label class="layui-form-label">颜色名称：</label>
         <div class="layui-input-inline">
             <input class="layui-input" name="name" id="queryName" autocomplete="off">
         </div>
@@ -49,14 +49,14 @@
     <div class="layui-col-md10">
         <form class="layui-form layui-from-pane" action="" style="margin-top:20px" >
             <div class="layui-form-item">
-                <label class="layui-form-label">主键</label>
+                <label class="layui-form-label">主键：</label>
                 <div class="layui-input-block">
                     <input type="text" id="typeId" name="typeId" readonly="readonly"
                            required  lay-verify="required" autocomplete="off" placeholder="" class="layui-input">
                 </div>
             </div>
             <div class="layui-form-item">
-                <label class="layui-form-label">所属商品</label>
+                <label class="layui-form-label">所属商品：</label>
                 <div class="layui-input-block">
                     <select name="goodsTypeId" lay-verify="required" lay-search="" id="goodsTypeId">
                         <%--<option value="">直接选择或搜索选择</option>
@@ -65,7 +65,7 @@
                 </div>
             </div>
             <div class="layui-form-item">
-                <label class="layui-form-label">颜色类别</label>
+                <label class="layui-form-label">颜色名称：</label>
                 <div class="layui-input-block">
                     <input type="text" id="typeName" name="typeName"
                            required  lay-verify="required" autocomplete="off" placeholder="请输入颜色名称" class="layui-input">

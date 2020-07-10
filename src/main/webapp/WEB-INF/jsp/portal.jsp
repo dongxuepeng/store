@@ -28,6 +28,7 @@
                 <li class="layui-nav-item" id="spgl">
                     <a href="javascript:;" data-id="spgl">商品管理</a>
                     <dl class="layui-nav-child" id = "spgl_dl">
+
                     </dl>
                 </li>
                 <li class="layui-nav-item" id="syfx">

@@ -8,6 +8,7 @@ $(function(){
             var queryGoods = $("#queryGoodsId");
             var goods = $("#goodsTypeId");
             queryGoods.append("<option value=''>直接选择或搜索选择</option>");
+            goods.append("<option value=''>直接选择或搜索选择</option>");
             var data = msg.data;
             for(var i=0;i<data.length;i++){
                 queryGoods.append("<option value='"+data[i].id+"'>"+data[i].name+"</option>");
@@ -133,7 +134,6 @@ layui.use(['table','form'], function(){
                 $("#typeId").val(typeId);
                 $("#typeName").val(typeName);
                 $("#goodsTypeId").val(goods);
-                //changeSelectValue("goodsTypeId",goods);
                 form.render();
             },
             btn2:function (index,layero) {
@@ -144,7 +144,7 @@ layui.use(['table','form'], function(){
     function saveGoodsTypeData(index,url,succMsg,errorMsg){
         var name = $("#typeName").val();
         if(name == ''){
-            layer.msg('名称不能为空', {icon: 5});
+            layer.msg('颜色名称不能为空', {icon: 5});
             return false;
         }
         var goods = $("#goodsTypeId").val();
