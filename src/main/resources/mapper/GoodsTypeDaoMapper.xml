@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dxp.store.dao.GoodsTypeDao">
+    <select id="getAllGoodsType" resultType="com.dxp.store.entity.GoodsType">
+        select  type_id as typeId, type_nam as typeName
+        from goodstypeinfo
+        <where>
+            <if test="id != null"> and type_id = #{id}</if>
+            <if test="name != null and name != ''"> and type_nam like concat('%',#{name},'%')</if>
+        </where>
+        ORDER BY type_id DESC
+        <if test="stCount != null and endCount != null"> limit #{stCount},#{endCount}</if>
+    </select>
+    <select id="getGoodsTypeCount" resultType="java.lang.Integer">
+        select  count(*)
+        from goodstypeinfo
+        <where>
+            <if test="id != null"> and type_id = #{id}</if>
+            <if test="name != null and name != ''"> and type_nam like concat('%',#{name},'%')</if>
+        </where>
+    </select>
+    <select id="getGoodsTypeByName" resultType="java.lang.Integer">
+        select  count(*)
+        from goodstypeinfo
+        <where>
+            <if test="id != null"> and type_id != #{id}</if>
+            <if test="name != null and name != ''"> and type_nam = #{name} </if>
+        </where>
+    </select>
+    <insert id="addGoodsType">
+        insert into goodstypeinfo(type_nam) values(#{name})
+    </insert>
+    <update id="updateGoodsType">
+        update goodstypeinfo set type_nam = #{name} where type_id = #{id}
+    </update>
+    <delete id="delGoodsType" parameterType="java.util.List">
+        delete from goodstypeinfo where type_id in
+        <foreach collection="ids"  item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </delete>
+</mapper>
